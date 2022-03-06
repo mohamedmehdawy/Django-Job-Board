@@ -5,6 +5,7 @@ Contact:
 Login:
 
 Job:
+
     - title
     - location
     - nature
@@ -17,6 +18,7 @@ Job:
     -  post jop
 
 Blog:
+
     - title
     - category
     - tags
