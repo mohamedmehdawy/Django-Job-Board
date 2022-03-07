@@ -13,7 +13,8 @@ Job:
     - published at
     - Vacancy
     - salary
-
+    - experience
+    
     - job apply
     -  post jop
 
