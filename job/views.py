@@ -1,5 +1,7 @@
+from django.urls import reverse
+
 from django.core.paginator import Paginator
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from .models import Job
 from .forms import ApplyForm, AddJobForm
 
@@ -8,7 +10,7 @@ from .forms import ApplyForm, AddJobForm
 def job_list(request):
     job_list = Job.objects.all()
     
-    paginator = Paginator(job_list, 1)
+    paginator = Paginator(job_list, 5)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
@@ -40,8 +42,10 @@ def add_job(request):
     if request.method == "POST":
         form = AddJobForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
-        
+            current_job = form.save(commit=False)
+            current_job.owner = request.user
+            current_job.save()
+            return redirect(reverse('jobs:job_list'))
     form = AddJobForm()
     context = {
         'form': form

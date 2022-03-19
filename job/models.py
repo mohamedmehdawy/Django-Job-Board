@@ -1,6 +1,5 @@
-from concurrent.futures import thread
-from tkinter import CASCADE
 from django.db import models
+from django.contrib.auth.models import User
 # importing slugify from django
 from django.utils.text import slugify
 # Create your models here.
@@ -13,6 +12,7 @@ class Job(models.Model):
         ('Full Time', 'Full Time'),
         ('Part Time', 'Part Time'),
     ]
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     # location
     job_nature = models.CharField(max_length=15, choices=JOB_NUTURE_CHOICES)
