@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+import re
 # importing slugify from django
 from django.utils.text import slugify
 # Create your models here.
@@ -24,9 +25,14 @@ class Job(models.Model):
     category = models.ForeignKey('Category', on_delete=models.CASCADE)
     image = models.ImageField(upload_to=image_upload) 
     slug = models.SlugField(blank=True, null=True)
-
+    same_slugs = models.IntegerField(default=0)
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
+        same_slugs_data = list(Job.objects.all().filter(title = self.title))
+        same_slugs_len = len(same_slugs_data)
+        if  same_slugs_len >= 1:
+            self.same_slugs = same_slugs_data[same_slugs_len - 1].same_slugs + 1
+            self.slug += str(self.same_slugs)
         super(Job, self).save(*args, **kwargs)
     def __str__(self):
         return self.title
